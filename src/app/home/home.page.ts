@@ -234,7 +234,7 @@ export class HomePage implements OnInit {
             } \
           ], \
           "focusForwardBtn": { \
-            "y": "49%" \
+            "y": "90%" \
           }, \
           "focusBackBtn": { \
             "y": "32%" \
