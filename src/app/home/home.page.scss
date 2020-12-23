@@ -1,27 +1,47 @@
-#container {
-  text-align: center;
+.outer {
+  width: 100vw;
+  overflow-y: hidden;
+  .buttons {
+    position: fixed;
+    z-index: 1;
+    ion-button {
+      width: 50px;
+    }
+    &.left {
+      top: calc(50vh - 25px);
+      left: 25px;
+    }
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+    &.right {
+      top: calc(50vh - 25px);
+      right: 25px;
+    }
+    span {
+      cursor: pointer;
+    }
+  }
+  .inner {
+    overflow-y: hidden;
+    overflow-x: scroll;
+    height: 100vh;
+    .content {
+      position: relative;
+      width: fit-content;
+      img {
+        height: 100vh;
+        max-width: unset;
+      }
+      ion-button {
+        position: absolute;
+        --ion-color-base: none !important;
+      }
+    }
+  }
+  .focus-btn {
+    position: absolute;
+    opacity: 0;
+  }
 }
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+::ng-deep body {
+  margin: 0 !important;
 }
