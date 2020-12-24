@@ -1,7 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { HomePage } from './home.page';
+
+const data = require('../../assets/data.json');
+const DEFAULT_SCROLL_OFFSET = 200;
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -24,51 +27,9 @@ describe('HomePage', () => {
 
   it('onInit', () => {
     const app = fixture.componentInstance;
-    app.data = '{ \
-      "scenes": [ \
-        { \
-          "id": 0, \
-          "backgroundUrl": "20201102_152648.jpg", \
-          "hitzones": [ \
-            { \
-              "x": "10%", \
-              "y": "22%", \
-              "goto": 1 \
-            } \
-          ], \
-          "focusForwardBtn": { \
-            "y": "22%" \
-          }, \
-          "focusBackBtn": { \
-            "y": "72%" \
-          } \
-        }, \
-        { \
-          "id": 1, \
-          "backgroundUrl": "20201102_152507.jpg", \
-          "hitzones": [ \
-            { \
-              "x": "10%", \
-              "y": "25%", \
-              "goto": 2 \
-            }, \
-            { \
-              "x": "72%", \
-              "y": "62%", \
-              "goto": 0 \
-            } \
-          ], \
-          "focusForwardBtn": { \
-            "y": "25%" \
-          }, \
-          "focusBackBtn": { \
-            "y": "62%" \
-          } \
-        } \
-      ] \
-    }';
+
     app.ngOnInit();
-    expect(app.scenes.length).toEqual(2);
+    expect(app.scenes.length).toEqual(data.scenes.length);
     expect(app.selectedScene).toEqual(app.scenes[0]);
   });
 
@@ -77,7 +38,7 @@ describe('HomePage', () => {
     fixture.detectChanges();
     app.inner.nativeElement.scrollLeft = 400;
     app.goLeft();
-    expect(app.inner.nativeElement.scrollLeft).toEqual(200);
+    expect(app.inner.nativeElement.scrollLeft).toEqual(400 - DEFAULT_SCROLL_OFFSET);
   });
 
   it('goRight', () => {
@@ -85,55 +46,11 @@ describe('HomePage', () => {
     fixture.detectChanges();
     app.inner.nativeElement.scrollLeft = 0;
     app.goRight();
-    expect(app.inner.nativeElement.scrollLeft).toEqual(200);
+    expect(app.inner.nativeElement.scrollLeft).toEqual(DEFAULT_SCROLL_OFFSET);
   });
 
-  it('goToScene', () => {
+  it('goToScene', fakeAsync(() => {
     const app = fixture.componentInstance;
-
-    app.data = '{ \
-      "scenes": [ \
-        { \
-          "id": 0, \
-          "backgroundUrl": "20201102_152648.jpg", \
-          "hitzones": [ \
-            { \
-              "x": "10%", \
-              "y": "22%", \
-              "goto": 1 \
-            } \
-          ], \
-          "focusForwardBtn": { \
-            "y": "22%" \
-          }, \
-          "focusBackBtn": { \
-            "y": "72%" \
-          } \
-        }, \
-        { \
-          "id": 1, \
-          "backgroundUrl": "20201102_152507.jpg", \
-          "hitzones": [ \
-            { \
-              "x": "10%", \
-              "y": "25%", \
-              "goto": 2 \
-            }, \
-            { \
-              "x": "72%", \
-              "y": "62%", \
-              "goto": 0 \
-            } \
-          ], \
-          "focusForwardBtn": { \
-            "y": "25%" \
-          }, \
-          "focusBackBtn": { \
-            "y": "62%" \
-          } \
-        } \
-      ] \
-    }';
     app.selectedScene = {
       id: 0,
       backgroundUrl: '20201102_152648.jpg',
@@ -154,5 +71,14 @@ describe('HomePage', () => {
     app.ngOnInit();
     app.goToScene(1);
     expect(app.selectedScene).toEqual(app.scenes[1]);
-  });
+
+    tick(201);
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(app.inner.nativeElement.scrollLeft).toEqual(762);
+    });
+
+    app.goToScene(-1);
+    expect(app.selectedScene).toEqual(app.scenes[1]);
+  }));
 });
