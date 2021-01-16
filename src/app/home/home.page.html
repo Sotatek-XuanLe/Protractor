@@ -1,24 +1,38 @@
 <div class="outer">
   <div class="buttons left">
-    <ion-button (click)="goLeft()">
+    <ion-button (click)="goLeft()" id="swipeLeft">
       <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
     </ion-button>
   </div>
   <div class="buttons right">
-    <ion-button (click)="goRight()">
+    <ion-button (click)="goRight()" id="swipeRight">
       <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
     </ion-button>
   </div>
   <div class="inner" #inner>
     <div class="content">
-      <img [src]="'assets/' + selectedScene.backgroundUrl">
+      <img [src]="'assets/' + selectedScene.backgroundUrl" />
       <ng-container *ngIf="!(isLoading$ | async)">
-        <ion-button color="dark" [style.top]="hit.x" [style.left]="hit.y" (click)="goToScene(hit.goto)" *ngFor="let hit of selectedScene.hitzones">
+        <ion-button
+          color="dark"
+          [style.top]="hit.x"
+          [style.left]="hit.y"
+          (click)="goToScene(hit.goto)"
+          *ngFor="let hit of selectedScene.hitzones"
+        >
           <ion-icon slot="icon-only" name="golf-outline"></ion-icon>
         </ion-button>
       </ng-container>
-      <button [style.left]="selectedScene.focusForwardBtn.y" #focusForwardBtn class="focus-btn"></button>
-      <button [style.left]="selectedScene.focusBackBtn.y" #focusBackBtn class="focus-btn"></button>
+      <button
+        [style.left]="selectedScene.focusForwardBtn.y"
+        #focusForwardBtn
+        class="focus-btn"
+      ></button>
+      <button
+        [style.left]="selectedScene.focusBackBtn.y"
+        #focusBackBtn
+        class="focus-btn"
+      ></button>
     </div>
   </div>
 </div>
