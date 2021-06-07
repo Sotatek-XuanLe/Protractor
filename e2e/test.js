@@ -1,5 +1,5 @@
 
-exports.configs = {
+exports.config = {
     directConnect: true,
     capablities: {
         'browserName': 'chorme'
